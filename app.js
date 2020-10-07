@@ -13,6 +13,33 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+// A function that will be used recursively to aask user if they want to add a team member
+function customizeTeam() {
+    inquirer.prompt({
+        type: "list",
+        name: "choice",
+        message: "Which team member would you like to create?",
+        choices: ["Create a manager", "Create an engineer", "Create an intern", "Quit"]
+    }).then(function ({ choice }) {
+        switch (choice) {
+            case "Create a manager":
+                // createManager();
+                break;
+
+            case "Create an engineer":
+                // createEngineer();
+                break;
+
+            case "Create an intern":
+                // createIntern();
+                break;
+
+            default:
+                console.log("Check out your team!")
+                break;
+        }
+    })
+}
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will

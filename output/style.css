@@ -1,0 +1,19 @@
+.engineer {
+    background-color: skyblue;
+}
+
+.manager {
+    background-color: red;
+}
+
+.intern {
+    background-color: green;
+}
+
+.card-body {
+    background-color: #EEE8CD;
+}
+
+.employee-card {
+    margin: 15px;
+}

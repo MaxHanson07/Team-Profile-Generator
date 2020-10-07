@@ -12,6 +12,10 @@ const render = require("./lib/htmlRenderer");
 
 // Array holding all created employees
 const employees = [];
+// Array holding users responses to questions
+const questionAnswers = [];
+
+customizeTeam();
 
 // Questions for creating employee
 const employeeQuestions = [
@@ -37,6 +41,9 @@ const employeeQuestions = [
 // and to create objects for each team member (using the correct classes as blueprints!)
 // A function that will be used recursively to aask user if they want to add a team member
 function customizeTeam() {
+    // Empties array to get rid of old answers
+    questionAnswers.length = 0;
+
     inquirer.prompt({
         type: "list",
         name: "choice",
@@ -58,6 +65,7 @@ function customizeTeam() {
 
             default:
                 console.log("Check out your team!")
+                render(employees);
                 break;
         }
     })
@@ -65,50 +73,81 @@ function customizeTeam() {
 
 function createManager() {
     console.log('Manager function');
-    inquirer.prompt(employeeQuestions,
-        {
-            type: "input",
-            message: 'What is the office number of manager?',
-            name: "officeNumber"
 
-        }).then(function (data) {
-            const manager = new Manager(data.employeeName, data.employeeId, data.employeeEmail, data.officeNumber);
-            employees.push(manager);
-            console.log(employees);
-            customizeTeam();
-        })
+    inquirer.prompt(employeeQuestions).then(function (data) {
+        questionAnswers.push(data.employeeName, data.employeeId, data.employeeEmail)
+        officePrompt();
+
+    })
+}
+
+// Used when creating manager to get additional info specific only to manager
+function officePrompt() {
+    inquirer.prompt({
+        type: "input",
+        message: 'What is the office number of the manager?',
+        name: "officeNumber"
+
+    }).then(function (data) {
+
+        questionAnswers.push(data.officeNumber)
+        const manager = new Manager(questionAnswers[0], questionAnswers[1], questionAnswers[2], questionAnswers[3]);
+        employees.push(manager);
+        console.log(employees);
+        customizeTeam();
+    })
 }
 
 function createEngineer() {
     console.log('Engineer function');
-    inquirer.prompt(employeeQuestions,
-        {
-            type: "input",
-            message: 'What is the github username of engineer?',
-            name: "github"
 
-        }).then(function (data) {
-            const engineer = new Engineer(data.employeeName, data.employeeId, data.employeeEmail, data.github);
-            employees.push(engineer);
-            console.log(employees);
-            customizeTeam();
-        })
+    inquirer.prompt(employeeQuestions).then(function (data) {
+        questionAnswers.push(data.employeeName, data.employeeId, data.employeeEmail)
+        githubPrompt();
+
+    })
+}
+
+// Used when creating engineer to get additional info specific only to engineer
+function githubPrompt() {
+    inquirer.prompt({
+        type: "input",
+        message: 'What is the github username of engineer?',
+        name: "github"
+
+    }).then(function (data) {
+
+        questionAnswers.push(data.github)
+        const engineer = new Engineer(questionAnswers[0], questionAnswers[1], questionAnswers[2], questionAnswers[3]);
+        employees.push(engineer);
+        console.log(employees);
+        customizeTeam();
+    })
 }
 
 function createIntern() {
     console.log('Intern function');
-    inquirer.prompt(employeeQuestions,
-        {
-            type: "input",
-            message: 'What school does intern attend?',
-            name: "school"
 
-        }).then(function (data) {
-            const intern = new Intern(data.employeeName, data.employeeId, data.employeeEmail, data.school);
-            employees.push(intern);
-            console.log(employees);
-            customizeTeam();
-        })
+    inquirer.prompt(employeeQuestions).then(function (data) {
+        questionAnswers.push(data.employeeName, data.employeeId, data.employeeEmail);
+        schoolPrompt()
+    })
+}
+
+// Used when creating interns to get additional info specific only to interns
+function schoolPrompt() {
+    inquirer.prompt({
+        type: "input",
+        message: 'What school does intern attend?',
+        name: "school"
+    }).then(function (data) {
+
+        questionAnswers.push(data.school)
+        const intern = new Intern(questionAnswers[0], questionAnswers[1], questionAnswers[2], questionAnswers[3]);
+        employees.push(intern);
+        console.log(employees);
+        customizeTeam();
+    })
 }
 
 
